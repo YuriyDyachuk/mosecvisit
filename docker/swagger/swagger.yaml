@@ -1,0 +1,57 @@
+openapi: 3.0.3
+info:
+  title: REST API for MoSecVisit
+  description: This is the REST API endpoints definition for MoSecVisit project
+  version: 0.1.0
+  contact:
+    email: mavinx.office@gmail.com
+externalDocs:
+  description: Find out more about Mavinx
+  url: https://mavinx.com
+servers:
+  - url: 'http://localhost:1103/api/v1'
+    description: Local server
+
+paths:
+  /login:
+    post:
+      tags:
+        - Users
+      summary: 'User login'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  default: admin@gmail.com
+                password:
+                  type: string
+                  default: password
+              required:
+                - email
+                - password
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: ''
+
+
+#Components information
+
+components:
+
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

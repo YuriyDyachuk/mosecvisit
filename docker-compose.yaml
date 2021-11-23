@@ -1,0 +1,54 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: "3.7"
+services:
+
+  db:
+    image: mysql:8.0
+    container_name: ${CONTAINER_MYSQL_NAME}
+    restart: unless-stopped
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: mosecvisit
+    ports:
+      - ${MYSQL_PORT_IN}:${MYSQL_PORT_OUT}
+
+  nginx:
+    build: docker/nginx
+    container_name: ${CONTAINER_NGINX_NAME}
+    working_dir: /application
+    restart: always
+    volumes:
+      - .:/application
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - ${NGINX_PORT_IN_80}:${NGINX_PORT_OUT_80}
+#      - ${NGINX_PORT_IN_443}:${NGINX_PORT_OUT_443}
+
+  app:
+    build: docker/php-fpm
+    container_name: ${CONTAINER_PHP_FPM_NAME}
+    restart: unless-stopped
+    working_dir: /application
+    volumes:
+      - .:/application
+      - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+
+  swagger:
+    container_name:  ${CONTAINER_SWAGGER_NAME}
+    image: swaggerapi/swagger-ui
+    restart: always
+    environment:
+      SWAGGER_JSON: /tmp/swagger.yaml
+    ports:
+      - ${SWAGGER_PORT_IN}:${SWAGGER_PORT_OUT}
+    volumes:
+      - ./docker/swagger/swagger.yaml:/tmp/swagger.yaml
+      - ./docker/swagger/docker/swagger/nginx/cors.conf:/etc/nginx/cors.conf
+      - ./docker/swagger/docker/htpasswd:/etc/nginx/htpasswd
