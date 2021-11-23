@@ -44,6 +44,6 @@ NEXT STEPS:
 NEXT STEPS - OPENING LOCAL SITES IN BROWSER:
 
         - http://localhost:3001 - First [default] page project
-        - http://localhost:3303 - Swagger RESTfull API [login - admin; pass - 123456]
+        - http://localhost:3003 - Swagger RESTfull API [login - admin; pass - 123456]
 
    
