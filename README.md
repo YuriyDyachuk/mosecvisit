@@ -2,48 +2,70 @@
 
 ## ABOUT DOCUMENTATION FOR [MOSECVISIT]()
 
-FIRST STEPS:
+##FIRST STEPS:
+  * Uninstall old versions
+  * Older versions of Docker were called docker, docker.io, or docker-engine. If these are installed, uninstall them:
 
-        Uninstall old versions
-        Older versions of Docker were called docker, docker.io, or docker-engine. If these are installed, uninstall them:
-        - sudo apt-get remove docker docker-engine docker.io containerd runc
+##Command
+    sudo apt-get remove docker docker-engine docker.io containerd runc
 
-        Install Docker Engine:
+##Install Docker Engine:
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io
+    sudo systemctl start docker
 
-        - sudo apt-get update
-        - sudo apt-get install docker-ce docker-ce-cli containerd.io
-        - sudo systemctl start docker
+##NEXT STEPS:
+
+The extension allows to:
+  * git clone - link to GitHub project
+  * copy file .env.exapmle in .env
+
+##Command
+    cp env.example .env
 
 NEXT STEPS:
 
-        - git clone - link to GitHub project
-        - copy file .env.exapmle in .env - [ cp env.example .env ]
+##Start command in bash terminal - for Docker:
+    make build
 
-NEXT STEPS:
+##next:
+    make start
 
-        Start command in bash terminal - for Docker:
-        - make build
-        next:
-        - make start
+##Generation APP_KEY hash command: 
+    make artisan-command CMD=key:generate
 
-        Generation APP_KEY hash command: 
-        - make artisan-command CMD:key:generate
+## Clear cache all
+    php artisan route:clear
+    php artisan config:clear
+    php artisan cache:clear
 
-        Give permission to access the directory to write logs [storage/*]:
-        - chmod -R 775 storage/
+##Give permission to access the directory to write logs [storage/*]:
+    chmod -R 775 storage/
 
-        Give permission to access the directory to write logs [bootstrap/*]:
-        - chmod -R 775 storage/
+##Give permission to access the directory to write logs [bootstrap/*]:
+    chmod -R 775 bootstrap/
 
-        Generation links folder storage [storage/ for public/]:
-        - make artisan-command CMD:storage:link
+##Generation links folder storage [storage/ for public/]:
+    make artisan-command CMD=storage:link
 
-        Generate migration table databases and seeder:
-        - make artisan-command CMD:migrate --seed
+##Generate migration table databases:
+    make artisan-command CMD=migrate
+
+##Generate seeder:
+    make artisan-command CMD=db:seed
+
 
 NEXT STEPS - OPENING LOCAL SITES IN BROWSER:
 
-        - http://localhost:3001 - First [default] page project
-        - http://localhost:3003 - Swagger RESTfull API [login - admin; pass - 123456]
+##Command First [default] page project
+    http://localhost:3001
+
+##Command Swagger RESTfull API
+    http://localhost:3003
+
+##LOGIN SWAGGER
+    admin 
+##PASSWORD SWAGGER
+    123456
 
    
