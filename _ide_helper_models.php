@@ -1,14 +1,16 @@
 <?php
 
-declare(strict_types=1);
+// @formatter:off
+/**
+ * A helper file for your Eloquent Models
+ * Copy the phpDocs from this file to the correct Model,
+ * And remove them from this file, to prevent double declarations.
+ *
+ * @author Barry vd. Heuvel <barryvdh@gmail.com>
+ */
 
-namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-
+namespace App\Models{
 /**
  * App\Models\User
  *
@@ -48,31 +50,30 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
- * @mixin \Eloquent
  */
-class User extends Model
-{
-    use HasApiTokens, HasFactory, Notifiable;
-
-    protected $guarded = [];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-
-
-    #================================== [CUSTOM METHODS] ==================================#
-
-
-
-    #===================================================== Relationship methods  =====================================================#
-
-
-
+	class User extends \Eloquent {}
 }
+
+namespace App\Models{
+/**
+ * App\Models\Verify
+ *
+ * @property int $id
+ * @property string|null $code
+ * @property int $user_id
+ * @property int $count_sms Number of messages to register per day
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Verify newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Verify newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Verify query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Verify whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Verify whereCountSms($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Verify whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Verify whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Verify whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Verify whereUserId($value)
+ */
+	class Verify extends \Eloquent {}
+}
+

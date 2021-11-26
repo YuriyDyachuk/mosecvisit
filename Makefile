@@ -52,10 +52,10 @@ login:
 	$(DOCKER_EXEC_PHP_FPM) bash
 
 ##==========================================================================
-## make remove build
+## make remove containers
 ##==========================================================================
 remove:
-	docker-compose -f $(DOCKER_COMPOSE_FILENAME) down --remove-orphans
+	docker-compose down --remove-orphans
 
 ##==========================================================================
 ## make composer-install
