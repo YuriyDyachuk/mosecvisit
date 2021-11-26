@@ -6,12 +6,14 @@
     "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
+        "bensampo/laravel-enum": "^4.1",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "onecentlin/laravel-adminer": "^5.3"
+        "onecentlin/laravel-adminer": "^5.3",
+        "twilio/sdk": "^6.31"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.10",
