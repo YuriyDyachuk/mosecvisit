@@ -26,8 +26,7 @@ class PhoneTwilioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'public_id' => ['required', 'string', 'exists:users,public_id'],
-            'phone'     => ['required', 'string', 'exists:users,phone']
+            'phone' => ['required', 'string', 'exists:users,phone']
         ];
     }
 }

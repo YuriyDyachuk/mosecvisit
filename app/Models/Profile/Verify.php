@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Models\Profile;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,8 +38,13 @@ class Verify extends Model
     #================================== [CUSTOM METHODS] ==================================#
 
 
+
     #===================================================== Relationship methods  =====================================================#
 
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
 
 }

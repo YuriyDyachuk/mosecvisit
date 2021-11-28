@@ -6,35 +6,27 @@ namespace App\VO;
 
 class UserVO
 {
-    private ?int    $pin;
     private ?int    $role;
     private ?string $name;
     private ?string $email;
     private ?string $phone;
     private ?string $login;
+    private ?string $nameCompany;
 
     public function __construct(
-        $pin,
         $role,
         $name,
         $email,
         $phone,
-        $login = null
+        $login = null,
+        $nameCompany
     ){
-        $this->pin = $pin;
         $this->role = $role;
         $this->name = $name;
         $this->email = $email;
         $this->phone = $phone;
         $this->login = $login;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getPin(): ?int
-    {
-        return $this->pin;
+        $this->nameCompany = $nameCompany;
     }
 
     /**
@@ -75,5 +67,13 @@ class UserVO
     public function getLogin(): string
     {
         return $this->login;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNameCompany(): ?string
+    {
+        return $this->nameCompany;
     }
 }

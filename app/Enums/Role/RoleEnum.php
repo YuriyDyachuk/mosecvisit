@@ -14,8 +14,8 @@ class RoleEnum extends Enum
     public static function getData(): array
     {
         return [
-            self::CONTRACTOR_TYPE_ROLE  => 'contractor',
-            self::VISITOR_TYPE_ROLE     => 'visitor',
+            self::CONTRACTOR_TYPE_ROLE  => 'CONTRACTOR',
+            self::VISITOR_TYPE_ROLE     => 'VISITOR',
         ];
     }
 

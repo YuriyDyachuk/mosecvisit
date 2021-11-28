@@ -6,9 +6,10 @@ namespace App\Services\API;
 
 use App\Models\User;
 use App\Factories\UserFactory;
-use App\Repositories\API\UserServiceRepository;
+use App\Repositories\API\User\UserServiceRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserService
 {
@@ -18,39 +19,54 @@ class UserService
     protected UserFactory $userFactory;
 
     /**
+     * @var UserQrCodeService
+     */
+    protected UserQrCodeService $qrCodeService;
+
+    /**
+     * @var VerifyPhoneService
+     */
+    protected VerifyPhoneService $verifyPhoneService;
+
+    /**
      * @var UserServiceRepository
      */
     protected UserServiceRepository $userRepository;
 
     public function __construct(
         UserFactory $userFactory,
+        UserQrCodeService $qrCodeService,
         UserServiceRepository $userRepository
     ){
         $this->userFactory = $userFactory;
+        $this->qrCodeService = $qrCodeService;
         $this->userRepository = $userRepository;
     }
 
-    public function store(array $data): User
+    public function store(array $data): void
     {
         $userVO = $this->userFactory->create($data);
+        $user = $this->userRepository->store($userVO);
 
-        return $this->userRepository->store($userVO);
+
+        if (!is_null($userVO->getLogin())) {
+            $this->qrCodeService->generation($userVO->getLogin(), $user->id);
+        }
     }
 
-    public function find(string $publicId): User
+    public function find($params, string $column): User
     {
-        return $this->userRepository->findById($publicId);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function exists(string $secretQR): User
-    {
-        if (!$this->userRepository->exists($secretQR)) {
-            throw new ModelNotFoundException('User not found.', Response::HTTP_UNAUTHORIZED);
+        if (!$this->userRepository->exists($params, $column)) {
+            throw new NotFoundHttpException('User not found.', null,Response::HTTP_NOT_FOUND);
         }
 
-        return $this->userRepository->show($secretQR);
+        return $this->userRepository->findById($params, $column);
+    }
+
+    public function updateVerify(int $userId): User
+    {
+        $this->userRepository->changeVerify($userId);
+
+        return $this->userRepository->findById($userId, 'id');
     }
 }

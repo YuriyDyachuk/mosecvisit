@@ -8,10 +8,8 @@ use Illuminate\Support\Str;
 
 class GenerateQRCodeFactory
 {
-    public function shapingQR(string $email): string
+    public function shapingQR(): string
     {
-        $symbols = ['@','.'];
-
-        return Str::replace($symbols, '_', $email);
+        return Str::random(15);
     }
 }

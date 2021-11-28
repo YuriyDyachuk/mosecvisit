@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories\API;
+namespace App\Repositories\API\User;
 
-use App\Models\Verify;
+use App\Models\Profile\Verify;
 use App\Repositories\BaseRepository;
 use App\VO\TwilioVO;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,21 +16,21 @@ class VerifyRepository extends BaseRepository
         return Verify::class;
     }
 
-    public function store(TwilioVO $twilioVO): void
+    public function store(TwilioVO $twilioVO): Verify
     {
         /** @var TYPE_NAME $this */
 
-        $this->query()->create([
-            'code'      => $twilioVO->getCode(),
-            'user_id'   => $twilioVO->getUserId(),
-        ])->refresh();
+        return $this->query()->firstOrCreate(
+            ['user_id'   => $twilioVO->getUserId()],
+            ['code'      => $twilioVO->getCode()]
+        )->refresh();
     }
 
-    public function findById(int $userId): Verify
+    public function findByUserId(int $code): int
     {
         /** @var TYPE_NAME $this */
 
-        return $this->query()->where(['user_id' => $userId])->first();
+        return $this->query()->where(['code' => $code])->value('user_id');
     }
 
 

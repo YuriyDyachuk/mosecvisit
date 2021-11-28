@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Requests\API\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\ValidationException;
 
-class LoginRequest extends FormRequest
+class CodeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,12 +26,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'secret_qrcode'    => ['required', 'string', 'exists:users,login'],
-            'captcha'   => ['required', function($attr, $val, $fail){
-                if ($val !== env('CAPTCHA')){
-                    throw ValidationException::withMessages(['captcha' => 'invalid.captcha']);
-                }
-            }]
+            'code'  => ['required', 'numeric', 'exists:verifies,code'],
         ];
     }
 }

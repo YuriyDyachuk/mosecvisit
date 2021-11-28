@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Auth\RegisterRequest;
-use App\Http\Resources\API\Auth\AuthTokenResource;
+use App\Http\Resources\API\SuccessResource;
 use App\Services\API\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -23,9 +23,9 @@ class RegisterController extends Controller
 
     public function register(RegisterRequest $request): JsonResponse
     {
-        $user = $this->userService->store($request->all());
+        $this->userService->store($request->only('role', 'name', 'email', 'phone', 'company'));
 
-        return (new AuthTokenResource($this->userService->find($user->public_id)))
+        return (new SuccessResource($request))
                 ->response()
                 ->setStatusCode(Response::HTTP_CREATED);
     }

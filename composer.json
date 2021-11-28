@@ -13,6 +13,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "onecentlin/laravel-adminer": "^5.3",
+        "simplesoftwareio/simple-qrcode": "~4",
         "twilio/sdk": "^6.31"
     },
     "require-dev": {

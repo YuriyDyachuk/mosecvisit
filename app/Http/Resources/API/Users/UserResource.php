@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\API\Users;
 
+use App\Enums\Role\RoleEnum;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -12,13 +13,14 @@ class UserResource extends JsonResource
     {
         return [
             'id'                => $this->public_id,
-            'pin'               => $this->pin,
-            'role'              => $this->role,
+            'role'              => !is_null($this->role) ? RoleEnum::nameByKey($this->role) : null,
             'name'              => $this->name,
             'email'             => $this->email,
             'phone'             => $this->phone,
-            'internal_role'     => $this->internal_role,
+            'name_company'      => $this->name_company,
             'secret_qr_code'    => $this->login,
+            'verification'      => $this->verification,
+            'qr_code'           => UserQrCodeResource::make($this->qrCode)
         ];
     }
 }

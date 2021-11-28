@@ -15,9 +15,9 @@ class InternalRoleEnum extends Enum
     public static function getData(): array
     {
         return [
-            self::INTERNAL_TYPE_ROLE    => 'internal',
-            self::CLIENT_TYPE_ROLE      => 'client',
-            self::EMPLOYEE_TYPE_ROLE    => 'employee',
+            self::INTERNAL_TYPE_ROLE    => 'INTERNAL',
+            self::CLIENT_TYPE_ROLE      => 'CLIENT',
+            self::EMPLOYEE_TYPE_ROLE    => 'EMPLOYEE',
         ];
     }
 

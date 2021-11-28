@@ -28,11 +28,11 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'pin'           => ['required','numeric','min:6','max:6'],
-            'role'          => ['required','numeric','in:' . RoleEnum::implodeData()],
-            'name'          => ['required', 'string'],
-            'email'         => ['required','email','string'],
-            'phone'         => ['required','string'],
+            'role'      => ['required','numeric','in:' . RoleEnum::implodeData()],
+            'name'      => ['required', 'string'],
+            'email'     => ['required','email','string','unique:users,email'],
+            'phone'     => ['required','string','unique:users,phone'],
+            'company'   => ['required','string','min:2'],
         ];
     }
 }

@@ -5,13 +5,23 @@ declare(strict_types=1);
 namespace App\Services\API;
 
 use App\Factories\TwilioFactory;
+use App\Models\Profile\Verify;
 use App\Models\User;
-use App\Repositories\API\VerifyRepository;
-use App\Traits\Twilio\UserCodeTwilioSMSTrait;
+use App\Repositories\API\User\VerifyRepository;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class VerifyPhoneService
 {
-    use UserCodeTwilioSMSTrait;
+    /**
+     * @var UserService
+     */
+    protected UserService $userService;
+
+    /**
+     * @var TwilioService
+     */
+    protected TwilioService $twilioService;
 
     /**
      * @var VerifyRepository
@@ -25,9 +35,13 @@ class VerifyPhoneService
 
     public function __construct(
         TwilioFactory $twilioFactory,
+        UserService $userService,
+        TwilioService $twilioService,
         VerifyRepository $verifyRepository
     ){
+        $this->twilioService = $twilioService;
         $this->twilioFactory = $twilioFactory;
+        $this->userService = $userService;
         $this->verifyRepository = $verifyRepository;
     }
 
@@ -35,16 +49,19 @@ class VerifyPhoneService
      * @throws \Twilio\Exceptions\TwilioException
      * @throws \Twilio\Exceptions\ConfigurationException
      */
-    public function store(User $user): void
+    public function send(string $phone): Verify
     {
+        $user = $this->userService->find($phone, 'phone');
         $twilioVO = $this->twilioFactory->create($user->id);
-        $this->messageTo($twilioVO->getCode(), $user);
+        /* Comment Twilio SMS code */
+        // $this->twilioService->messageTo($twilioVO->getCode(), $user);
 
-        $this->verifyRepository->store($twilioVO);
+        return $this->verifyRepository->store($twilioVO);
     }
 
-    public function find(int $userId): \App\Models\Verify
+    public function find(int $code): User
     {
-        return $this->verifyRepository->findById($userId);
+        $userId = $this->verifyRepository->findByUserId($code);
+        return $this->userService->updateVerify($userId);
     }
 }

@@ -22,12 +22,12 @@ class UserFactory
     public function create(array $data): UserVO
     {
         return new UserVO(
-            isset($data['pin']) ? (int) $data['pin'] : null,
             isset($data['role']) ? (int) $data['role'] : null,
             $data['name'] ?? null,
             $data['email'] ?? null,
             $data['phone'] ?? null,
-            $this->generateQRCodeFactory->shapingQR($data['email'])
+            $this->generateQRCodeFactory->shapingQR(),
+            $data['company'] ?? null
         );
     }
 }

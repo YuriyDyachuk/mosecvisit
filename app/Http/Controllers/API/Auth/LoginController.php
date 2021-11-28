@@ -9,7 +9,7 @@ use App\Http\Requests\API\Auth\LoginRequest;
 use App\Http\Resources\API\Auth\AuthTokenResource;
 use App\Services\API\UserService;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response;
 
 class LoginController extends Controller
 {
@@ -23,12 +23,9 @@ class LoginController extends Controller
         $this->userService = $userService;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function login(LoginRequest $request): JsonResponse
     {
-        $user = $this->userService->exists($request->input('secret_qr_code'));
+        $user = $this->userService->find($request->input('secret_qrcode'), 'login');
 
         return AuthTokenResource::make($user)->response()->setStatusCode(Response::HTTP_OK);
     }

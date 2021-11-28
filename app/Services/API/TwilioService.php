@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Traits\Twilio;
+namespace App\Services\API;
 
 use App\Models\User;
 use Twilio\Rest\Client;
 
-trait UserCodeTwilioSMSTrait
+class TwilioService
 {
     /**
      * @throws \Twilio\Exceptions\ConfigurationException

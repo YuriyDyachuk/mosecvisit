@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories\API;
+namespace App\Repositories\API\User;
 
 use App\Models\User;
 use App\Repositories\BaseRepository;
 use App\VO\UserVO;
-use Illuminate\Database\Eloquent\Collection;
 
 class UserServiceRepository extends BaseRepository
 {
@@ -21,30 +20,32 @@ class UserServiceRepository extends BaseRepository
         /** @var TYPE_NAME $this */
 
         return $this->query()->create([
-            'pin'           => $userVO->getPin(),
             'role'          => $userVO->getRole(),
             'name'          => $userVO->getName(),
             'email'         => $userVO->getEmail(),
             'login'         => $userVO->getLogin(),
             'phone'         => $userVO->getPhone(),
+            'name_company'  => $userVO->getNameCompany(),
         ])->refresh();
     }
 
-    public function show(string $secretQR): User
+    public function changeVerify(int $userId): void
     {
-        return $this->query()->where(['login' => $secretQR])->first();
+        $this->query()->where(['id' => $userId])->update([
+            'verification' => true
+        ]);
     }
 
-    public function findById(string $publicId): User
+    public function findById($params, string $column): User
     {
         /** @var TYPE_NAME $this */
 
-        return $this->query()->where(['public_id' => $publicId])->first();
+        return $this->query()->where([$column => $params])->first();
     }
 
-    public function exists(string $secretQR): bool
+    public function exists($params, string $column): bool
     {
-        return $this->query()->where(['login' => $secretQR])->exists();
+        return $this->query()->where([$column => $params])->exists();
     }
 
 }

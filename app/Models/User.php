@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Profile\UserQrCode;
+use App\Models\Profile\Verify;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -63,16 +65,29 @@ class User extends Model
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'verification'      => 'boolean'
     ];
 
 
 
     #================================== [CUSTOM METHODS] ==================================#
 
+    public function getRouteKeyName(): string
+    {
+        return 'public_id';
+    }
 
 
     #===================================================== Relationship methods  =====================================================#
 
+    public function verify(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Verify::class);
+    }
 
+    public function qrCode(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(UserQrCode::class);
+    }
 
 }

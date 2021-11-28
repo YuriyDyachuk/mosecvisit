@@ -1,6 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\Auth\LoginController;
+use App\Http\Controllers\API\Auth\RegisterController;
+use App\Http\Controllers\API\Twilio\SendCodeController;
+use App\Http\Controllers\API\User\QrCodeController;
+use App\Http\Controllers\API\User\MainController;
+use App\Http\Controllers\API\User\LogoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +19,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->group(function () {
+
+    /* Basic register && login user */
+        Route::post('register', [RegisterController::class, 'register']);
+        Route::post('login', [LoginController::class, 'login']);
+    /* End section */
+
+    /* Twilio send code in phone user */
+        Route::post('send-code', [SendCodeController::class, 'store']);
+        Route::patch('verify-code', [SendCodeController::class, 'update']);
+    /* End section */
+
+    Route::middleware('auth:sanctum')->group(function () {
+
+        /* User */
+        Route::resource('users',MainController::class);
+
+        Route::prefix('user')->group(function () {
+            Route::prefix('{user}')->group(function () {
+                Route::get('qr-code',[QrCodeController::class, 'index']);
+                Route::post('logout', [LogoutController::class, 'logout']);
+            });
+        });
+
+    });
+
 });

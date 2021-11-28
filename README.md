@@ -48,6 +48,13 @@ NEXT STEPS
 ## Generation links folder storage [storage/ for public/]:
     make artisan-command CMD=storage:link
 
+## Create new folder qr - in storage - path project - [ Image QRCODE for user ]
+## cd storage/app/public
+    mkdir qr
+
+## Next 
+    chmod -R 775 qr/.
+
 ## Generate migration table databases:
     make artisan-command CMD=migrate
 
