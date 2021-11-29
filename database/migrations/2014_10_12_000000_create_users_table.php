@@ -19,16 +19,13 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->uuid('public_id')->default(DB::raw('(UUID())'))->index();
-            $table->string('name')->nullable()->index();
-            $table->string('login')->nullable();
+            $table->string('full_name')->nullable()->index();
+            $table->string('login')->nullable()->unique();
             $table->string('email')->unique();
             $table->string('phone')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->unsignedBigInteger('pin')->nullable();
-            $table->enum('role',['contractor','visitor'])->default('visitor');
-            $table->enum('internal_role',['guest','client','employee'])->default('guest');
-            $table->rememberToken();
+            $table->string('company_name')->unique();
+            $table->tinyInteger('role_id');
+            $table->tinyInteger('verify')->default(0);
             $table->timestamps();
         });
     }

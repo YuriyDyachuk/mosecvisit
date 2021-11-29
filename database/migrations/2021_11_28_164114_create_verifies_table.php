@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,15 +11,13 @@ class CreateVerifiesTable extends Migration
      *
      * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('verifies', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->nullable();
-            $table->foreignId('user_id')->constrained('users','id')->cascadeOnDelete();
-            $table->integer('count_sms')
-                ->default(0)
-                ->comment('Number of messages to register per day');
+            $table->unsignedBigInteger('user_id');
+            $table->integer('code');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -31,7 +27,7 @@ class CreateVerifiesTable extends Migration
      *
      * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('verifies');
     }

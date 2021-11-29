@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -52,27 +53,13 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, Notifiable;
 
     protected $guarded = [];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-
-
-    #================================== [CUSTOM METHODS] ==================================#
-
-
-
-    #===================================================== Relationship methods  =====================================================#
-
-
+    public function verify(): HasOne
+    {
+        return $this->hasOne(Verify::class);
+    }
 
 }
