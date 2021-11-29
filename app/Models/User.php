@@ -62,4 +62,9 @@ class User extends Model
         return $this->hasOne(Verify::class);
     }
 
+    public function isVerify(): bool
+    {
+        return (bool) $this->verify;
+    }
+
 }

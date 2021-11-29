@@ -14,6 +14,12 @@ Route::prefix('auth')->group(function (){
         Route::post('verify', [AuthController::class, 'registerVerify'])->middleware('auth:sanctum');
     });
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+});
 
+
+Route::middleware(['auth:sanctum','verify'])->group(function (){
+    Route::get('events', function (){
+        dd(1);
+    });
 });
 

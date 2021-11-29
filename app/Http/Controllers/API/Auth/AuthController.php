@@ -61,6 +61,7 @@ class AuthController extends Controller
         }
 
         $user = $this->authService->login($loginRequest->input('login'));
+        $this->authService->resetVerify($user->id);
 
         return $this->response(TokenResource::make($user));
     }

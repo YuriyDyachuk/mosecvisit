@@ -39,11 +39,12 @@ class UserService
 
     private function createCode(): int
     {
-        return rand(10**5,10**6);
+        return 111111;  // rand(10**5,10**6);
     }
 
     public function createQrCode(User $user): void
     {
         //тут создать qr code
     }
+
 }

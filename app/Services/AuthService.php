@@ -50,17 +50,25 @@ class AuthService
             $this->userRepository->verifyById($userId);
             $this->verifyService->deleteByCodeAndUserId($userId, $code);
             $this->userRepository->saveLogin($userId,$this->userService->createLogin());
-
             DB::commit();
-            return $this->userRepository->findById($userId);
         }catch (\Throwable $exception){
             DB::rollBack();
         }
+
+        return $this->userRepository->findById($userId);
     }
 
     public function loginVerify(int $code, int $userId): ?User
     {
-        $this->verifyService->deleteByCodeAndUserId($userId, $code);
+        DB::beginTransaction();
+
+        try {
+            $this->userRepository->verifyById($userId);
+            $this->verifyService->deleteByCodeAndUserId($userId, $code);
+            DB::commit();
+        }catch (\Throwable $exception){
+            DB::rollBack();
+        }
 
         return $this->userRepository->findById($userId);
     }
@@ -76,5 +84,10 @@ class AuthService
     public function existsByLogin(string $login): bool
     {
         return $this->userRepository->existsByLogin($login);
+    }
+
+    public function resetVerify(int $userId): void
+    {
+        $this->userRepository->resetVerify($userId);
     }
 }

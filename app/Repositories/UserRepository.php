@@ -56,4 +56,13 @@ class UserRepository extends BaseRepository
             ->exists();
     }
 
+    public function resetVerify(int $id): void
+    {
+         $this->query()
+            ->where('id', $id)
+            ->update([
+                'verify' => UserStatusEnum::INACTIVE
+            ]);
+    }
+
 }
