@@ -29,7 +29,11 @@ class AuthService
 
     public function register(RegisterDTO $registerDTO): User
     {
-        return $this->userRepository->create($registerDTO);
+        $user = $this->userRepository->create($registerDTO);
+        $this->userService->sendCode($user);
+
+        return $user ;
+
     }
 
     public function logout(User $user): void
@@ -54,14 +58,14 @@ class AuthService
         }
     }
 
-    public function loginVerify(int $code, int $userId): User
+    public function loginVerify(int $code, int $userId): ?User
     {
         $this->verifyService->deleteByCodeAndUserId($userId, $code);
 
         return $this->userRepository->findById($userId);
     }
 
-    public function login(string $login): User
+    public function login(string $login): ?User
     {
         $user =  $this->userRepository->findByLogin($login);
         $this->userService->sendCode($user);

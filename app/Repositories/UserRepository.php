@@ -8,8 +8,6 @@ use App\Models\User;
 
 class UserRepository extends BaseRepository
 {
-
-
     public function model(): string
     {
         return User::class;
@@ -39,7 +37,7 @@ class UserRepository extends BaseRepository
        return $this->query()->find($id);
     }
 
-    public function findByLogin(string $login): User
+    public function findByLogin(string $login): ?User
     {
         return $this->query()->where('login', $login)->first();
     }

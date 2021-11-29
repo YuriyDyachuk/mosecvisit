@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\VerifyRequest;
 use App\Http\Resources\Auth\TokenResource;
+use App\Http\Resources\UserResource;
 use App\Services\AuthService;
 use App\Services\UserService;
 use App\Services\VerifyService;
@@ -25,19 +26,15 @@ class AuthController extends Controller
 
     private UserFactory $userFactory;
 
-    private UserService $userService;
-
     private VerifyService $verifyService;
 
     public function __construct(
         AuthService $authService,
         UserFactory $userFactory,
-        UserService $userService,
         VerifyService $verifyService
     ) {
         $this->authService = $authService;
         $this->userFactory = $userFactory;
-        $this->userService = $userService;
         $this->verifyService = $verifyService;
     }
 
@@ -47,9 +44,8 @@ class AuthController extends Controller
         try {
             $userFactory = $this->userFactory->create($registerRequest);
             $registerUser = $this->authService->register($userFactory);
-            $this->userService->sendCode($registerUser);
-
             DB::commit();
+
             return $this->response( TokenResource::make($registerUser));
         }catch (\Throwable $exception){
             DB::rollBack();
@@ -85,12 +81,12 @@ class AuthController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $this->authService->registerVerify(
-            (int) $verifyRequest->input('code'),
-            $verifyRequest->user()->id
-        );
+        $user =  $this->authService->registerVerify(
+                    (int) $verifyRequest->input('code'),
+                    $verifyRequest->user()->id
+                    );
 
-        return $this->response('Success');
+        return $this->response(UserResource::make($user));
     }
 
     public function loginVerify(VerifyRequest $verifyRequest): JsonResponse
@@ -102,11 +98,11 @@ class AuthController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $this->authService->loginVerify(
-            (int) $verifyRequest->input('code'),
-            $verifyRequest->user()->id
-        );
+        $user =  $this->authService->loginVerify(
+                    (int) $verifyRequest->input('code'),
+                    $verifyRequest->user()->id
+            );
 
-        return $this->response('Success');
+        return $this->response(UserResource::make($user));
     }
 }
