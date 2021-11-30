@@ -6,7 +6,6 @@ namespace App\Services;
 
 use App\DataTransferObjects\RegisterDTO;
 use App\DataTransferObjects\VerifyDTO;
-use App\Factories\UserVerifyFactory;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
@@ -61,19 +60,19 @@ class AuthService
         return $this->userRepository->findById($verifyDTO->userId);
     }
 
-    public function loginVerify(int $code, int $userId): ?User
+    public function loginVerify(VerifyDTO $verifyDTO): ?User
     {
         DB::beginTransaction();
 
         try {
-            $this->userRepository->verifyById($userId);
-            $this->verifyService->deleteByCodeAndUserId($userId, $code);
+            $this->userRepository->verifyById($verifyDTO->userId);
+            $this->verifyService->deleteByCodeAndUserId($verifyDTO->userId, $verifyDTO->code);
             DB::commit();
         }catch (\Throwable $exception){
             DB::rollBack();
         }
 
-        return $this->userRepository->findById($userId);
+        return $this->userRepository->findById($verifyDTO->userId);
     }
 
     public function login(string $login): ?User

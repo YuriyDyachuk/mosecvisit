@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\API\EventResourceCollection;
 use App\Services\Event\EventService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
@@ -19,7 +18,7 @@ class EventController extends Controller
         $this->eventService = $eventService;
     }
 
-    public function index(Request $request): JsonResponse
+    public function index(): JsonResponse
     {
         return $this->response(new EventResourceCollection($this->eventService->getAll()));
     }

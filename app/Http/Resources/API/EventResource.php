@@ -15,13 +15,11 @@ class EventResource extends JsonResource
         return [
             'id'            => $this->public_id,
             'address'       => $this->address,
-            'date_event'    => Carbon::parse($this->date_event)->format('Y-m-d') ?? null,
-            'time_event'    => Carbon::parse($this->date_event)->format('H:i') ?? null,
+            'date_event'    => $this->start_event_date,
             'title'         => $this->title,
             'description'   => $this->description,
             'lat'           => $this->lat,
             'lng'           => $this->lng,
-            'author'        => UserResource::make($this->user),
             'created_at'    => $this->created_at,
         ];
     }

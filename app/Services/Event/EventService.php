@@ -18,6 +18,6 @@ class EventService
 
     public function getAll(): LengthAwarePaginator
     {
-        return $this->eventRepository->index();
+        return $this->eventRepository->all();
     }
 }

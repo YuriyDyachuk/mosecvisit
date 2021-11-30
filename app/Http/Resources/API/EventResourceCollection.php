@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class EventResourceCollection extends ResourceCollection
 {
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'data' => $this->resource->items(),

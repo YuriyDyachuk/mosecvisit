@@ -18,12 +18,11 @@ class CreateEventsTable extends Migration
             $table->id();
             $table->uuid('public_id')->default(DB::raw('(UUID())'))->index();
             $table->string('address')->nullable();
-            $table->timestamp('date_event')->nullable();
+            $table->timestamp('start_event_date')->nullable();
             $table->string('title')->nullable();
             $table->longText('description')->nullable();
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();
-            $table->foreignId('user_id')->constrained('users','id')->cascadeOnDelete();
             $table->timestamps();
         });
     }

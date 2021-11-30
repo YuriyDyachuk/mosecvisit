@@ -15,8 +15,6 @@ class EventFactory extends Factory
      */
     public function definition()
     {
-        $userIds = User::query()->get()->pluck('id')->toArray();
-
         return [
             'address'       => $this->faker->address(),
             'date_event'    => $this->faker->dateTime(),
@@ -24,7 +22,6 @@ class EventFactory extends Factory
             'description'   => $this->faker->text(300),
             'lat'           => $this->faker->latitude,
             'lng'           => $this->faker->longitude,
-            'user_id'       => 1
         ];
     }
 }

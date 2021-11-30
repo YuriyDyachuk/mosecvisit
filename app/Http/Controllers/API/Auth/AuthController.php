@@ -7,13 +7,11 @@ namespace App\Http\Controllers\API\Auth;
 use App\Factories\UserFactory;
 use App\Factories\UserVerifyFactory;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\VerifyRequest;
 use App\Http\Resources\Auth\TokenResource;
 use App\Http\Resources\UserResource;
 use App\Services\AuthService;
-use App\Services\UserService;
 use App\Services\VerifyService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -101,10 +99,8 @@ class AuthController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $user =  $this->authService->loginVerify(
-                    (int) $verifyRequest->input('code'),
-                    $verifyRequest->user()->id
-            );
+        $userVerifyFactory = $this->userVerifyFactory->create($verifyRequest);
+        $user =  $this->authService->loginVerify($userVerifyFactory);
 
         return $this->response(UserResource::make($user));
     }

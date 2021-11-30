@@ -14,7 +14,7 @@ class EventRepository extends BaseRepository
         return Event::class;
     }
 
-    public function index(): LengthAwarePaginator
+    public function all(): LengthAwarePaginator
     {
         return $this->query()->paginate(10);
     }
