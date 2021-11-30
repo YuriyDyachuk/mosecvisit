@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\RoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -15,13 +16,14 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name'      => $this->faker->name(),
-            'login'     => $this->faker->userName(),
-            'email'     => $this->faker->unique()->safeEmail(),
-            'phone'     => $this->faker->phoneNumber(),
-            'password'  => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'pin'       => $this->faker->randomNumber(6),
-            'email_verified_at' => now(),
+            'full_name'     => $this->faker->name(),
+            'login'         => $this->faker->userName(),
+            'email'         => $this->faker->unique()->safeEmail(),
+            'phone'         => $this->faker->phoneNumber(),
+            'company_name'  => $this->faker->company(),
+            'role_id'       => RoleEnum::VISITOR_ROLE,
+            'verify'        => false,
+            'link_qrcode'   => null,
         ];
     }
 

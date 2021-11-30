@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DataTransferObjects\RegisterDTO;
+use App\DataTransferObjects\VerifyDTO;
+use App\Factories\UserVerifyFactory;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +35,6 @@ class AuthService
         $this->userService->sendCode($user);
 
         return $user ;
-
     }
 
     public function logout(User $user): void
@@ -42,20 +43,22 @@ class AuthService
     }
 
 
-    public function registerVerify(int $code, int $userId): User
+    public function registerVerify(VerifyDTO $verifyDTO): User
     {
         DB::beginTransaction();
 
         try {
-            $this->userRepository->verifyById($userId);
-            $this->verifyService->deleteByCodeAndUserId($userId, $code);
-            $this->userRepository->saveLogin($userId,$this->userService->createLogin());
+            $this->userRepository->verifyById($verifyDTO->userId);
+            $this->verifyService->deleteByCodeAndUserId($verifyDTO->userId, $verifyDTO->code);
+            $this->userRepository->saveLogin($verifyDTO->userId, $this->userService->createLogin());
+            $this->userService->createQrCode($this->userRepository->findById($verifyDTO->userId));
+
             DB::commit();
         }catch (\Throwable $exception){
             DB::rollBack();
         }
 
-        return $this->userRepository->findById($userId);
+        return $this->userRepository->findById($verifyDTO->userId);
     }
 
     public function loginVerify(int $code, int $userId): ?User
@@ -89,5 +92,10 @@ class AuthService
     public function resetVerify(int $userId): void
     {
         $this->userRepository->resetVerify($userId);
+    }
+
+    public function saveLinkQrCode(int $userId, string $link)
+    {
+        $this->userRepository->saveQrCode($userId, $link);
     }
 }

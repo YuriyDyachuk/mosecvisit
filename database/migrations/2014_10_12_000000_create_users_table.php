@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('company_name')->unique();
             $table->tinyInteger('role_id');
             $table->tinyInteger('verify')->default(0);
+            $table->string('link_qrcode')->nullable();
             $table->timestamps();
         });
     }

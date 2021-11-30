@@ -49,6 +49,13 @@ class UserRepository extends BaseRepository
             ->update(['login' => $login]);
     }
 
+    public function saveQrCode(int $userId, string $link): void
+    {
+        $this->query()
+            ->where('id', $userId)
+            ->update(['link_qrcode' => $link]);
+    }
+
     public function existsByLogin(string $login): bool
     {
         return $this->query()

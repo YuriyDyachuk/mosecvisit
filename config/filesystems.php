@@ -35,6 +35,12 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'qr' => [
+            'driver' => 'local',
+            'root'   => storage_path('app/public/qr'),
+            'url'    => env('APP_DOWNLOAD_QR_URL', null),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

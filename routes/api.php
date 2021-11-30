@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\Event\EventController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -18,8 +19,6 @@ Route::prefix('auth')->group(function (){
 
 
 Route::middleware(['auth:sanctum','verify'])->group(function (){
-    Route::get('events', function (){
-        dd(1);
-    });
+    Route::resource('events', EventController::class);
 });
 

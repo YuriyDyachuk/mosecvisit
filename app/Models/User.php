@@ -53,7 +53,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Model
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, HasFactory;
 
     protected $guarded = [];
 

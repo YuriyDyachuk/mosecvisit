@@ -4,34 +4,78 @@ info:
   description: This is the REST API endpoints definition for MoSecVisit project
   version: 0.1.0
   contact:
-    email: mavinx.office@gmail.com
+    email: ''
 externalDocs:
-  description: Find out more about Mavinx
-  url: https://mavinx.com
+  description: Find out more about Restfull API
+  url: ''
 servers:
-  - url: 'http://localhost:1103/api/v1'
+  - url: 'http://localhost:3001/api/'
     description: Local server
 
 paths:
-  /login:
+  /auth/register:
     post:
       tags:
-        - Users
-      summary: 'User login'
+        - Register && Login
+      summary: Custom register in project
       requestBody:
         content:
           application/json:
             schema:
               properties:
+                full_name:
+                  type: string
+                  default: Jasmin Creck
                 email:
                   type: string
-                  default: admin@gmail.com
-                password:
+                  default: jasmin@gmail.com
+                phone:
                   type: string
-                  default: password
+                  default: 900876066
+                role_id:
+                  type: integer
+                  default: 2
+                  description: it's role [ 1 - CONTRACTOR, 2 - VISITOR]
+                company_name:
+                  type: string
+                  default: NASA
               required:
+                - full_name
                 - email
-                - password
+                - phone
+                - role_id
+                - company_name
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CustomRegister'
+
+  /auth/register/verify:
+    post:
+      tags:
+        - Register && Login
+      summary: User save login
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                code:
+                  type: number
+                  description: Code number of Twilio
+              required:
+                - code
       responses:
         200:
           description: ''
@@ -40,12 +84,242 @@ paths:
               schema:
                 properties:
                   data:
-                    $ref: ''
+                    $ref: '#/components/schemas/TwilioVerifyCode'
+
+  /auth/login:
+    post:
+      tags:
+        - Register && Login
+      summary: Custom login user for project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                login:
+                  type: string
+                  default: strrandom15
+                  required: true
+              required:
+                - secret_qr_code
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CustomRegister'
+
+  /auth/login/verify:
+    post:
+      tags:
+        - Register && Login
+      summary: Delete code verify
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                login:
+                  type: string
+                  default: strrandom15
+                  required: true
+              required:
+                - secret_qr_code
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TwilioVerifyCode'
 
 
-#Components information
+  /auth/logout:
+    post:
+      tags:
+        - Users
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: string
+      summary: 'Logout user is service'
+      responses:
+        204:
+          description: ''
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: '#/components/schemas/LogoutUsers'
+
+  /events:
+    get:
+      tags:
+        - Events
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: string
+      summary: 'Event Collection is service'
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: '#/components/schemas/EventCollection'
 
 components:
+
+  schemas:
+
+    CustomRegister:
+      type: object
+      properties:
+        token:
+          type: string
+          example: Bearer 1968|sIF1fC8JoVUM8Y1WvdNRhyvlZrPrWu94CkOfCg8I
+
+    TwilioReceiverCode:
+      type: object
+      properties:
+        id:
+          type: string
+          default: 1
+        code:
+          type: number
+          default: 132244
+
+    TwilioVerifyCode:
+      type: object
+      properties:
+        id:
+          type: string
+          default: 12
+        full_name:
+          type: string
+          default: Jasmin
+        email:
+          type: string
+          default: jasmin@gmail.com
+          uniqueItems: true
+        phone:
+          type: string
+          default: 900876066
+          uniqueItems: true
+        role_id:
+          type: integer
+          default: It's role [ 1 - CONTRACTOR, 2 - VISITOR]
+          description: It's role [ 1 - CONTRACTOR, 2 - VISITOR]
+        company_name:
+          type: string
+          default: NASA
+          description: NASA - at company name user
+        login_methods:
+          type: object
+          properties:
+            login:
+              type: string
+              default: One42ac150005
+            qr:
+              type: string
+              default: http://localhost:3001//storage/qr/c4949102b26e71d9cd3a8de92848195d.png
+
+    LogoutUsers:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Unauthenticated
+
+    EventCollection:
+      type: object
+      properties:
+        id:
+          type: string
+          default: 1
+        address:
+          type: string
+          default: Jasmin
+        date_event:
+          type: string
+          default: jasmin@gmail.com
+          uniqueItems: true
+        time_event:
+          type: string
+          default: 900876066
+          uniqueItems: true
+        title:
+          type: integer
+          default: It's role [ 1 - CONTRACTOR, 2 - VISITOR]
+          description: It's role [ 1 - CONTRACTOR, 2 - VISITOR]
+        description:
+          type: string
+          default: NASA
+          description: NASA - at company name user
+        lat:
+          type: string
+          default: strrandom15
+          uniqueItems: true
+        lng:
+          type: string
+          default: strrandom15
+          uniqueItems: true
+        author:
+          type: object
+          properties:
+            id:
+              type: string
+              default: 10
+            full_name:
+              type: string
+              default: Jasmin
+            email:
+              type: string
+              default: jasmin@gmail.com
+              uniqueItems: true
+            phone:
+              type: string
+              default: 900876066
+              uniqueItems: true
+            role_id:
+              type: integer
+              default: It's role [ 1 - CONTRACTOR, 2 - VISITOR]
+              description: It's role [ 1 - CONTRACTOR, 2 - VISITOR]
+            company_name:
+              type: string
+              default: NASA
+              description: NASA - at company name user
+            login_methods:
+              type: object
+              properties:
+                login:
+                  type: string
+                  default: One42ac150005
+                qr:
+                  type: string
+                  default: http://localhost:3001//storage/qr/c4949102b26e71d9cd3a8de92848195d.png
+
 
 
   securitySchemes:

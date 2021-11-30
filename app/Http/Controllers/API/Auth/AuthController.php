@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API\Auth;
 
 use App\Factories\UserFactory;
+use App\Factories\UserVerifyFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
@@ -26,16 +27,20 @@ class AuthController extends Controller
 
     private UserFactory $userFactory;
 
+    private UserVerifyFactory $userVerifyFactory;
+
     private VerifyService $verifyService;
 
     public function __construct(
         AuthService $authService,
         UserFactory $userFactory,
-        VerifyService $verifyService
+        VerifyService $verifyService,
+        UserVerifyFactory $userVerifyFactory
     ) {
         $this->authService = $authService;
         $this->userFactory = $userFactory;
         $this->verifyService = $verifyService;
+        $this->userVerifyFactory = $userVerifyFactory;
     }
 
     public function register(RegisterRequest $registerRequest): JsonResponse
@@ -46,15 +51,14 @@ class AuthController extends Controller
             $registerUser = $this->authService->register($userFactory);
             DB::commit();
 
-            return $this->response( TokenResource::make($registerUser));
+            return $this->response(TokenResource::make($registerUser));
         }catch (\Throwable $exception){
             DB::rollBack();
-
             return $this->response(['message' => $exception->getMessage()]);
         }
     }
 
-    public function login(LoginRequest $loginRequest): JsonResponse
+    public function login(Request $loginRequest): JsonResponse
     {
         if (!$this->authService->existsByLogin($loginRequest->input('login'))){
             throw new NotFoundHttpException();
@@ -82,10 +86,8 @@ class AuthController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $user =  $this->authService->registerVerify(
-                    (int) $verifyRequest->input('code'),
-                    $verifyRequest->user()->id
-                    );
+        $userVerifyFactory = $this->userVerifyFactory->create($verifyRequest);
+        $user = $this->authService->registerVerify($userVerifyFactory);
 
         return $this->response(UserResource::make($user));
     }

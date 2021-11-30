@@ -12,7 +12,9 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "onecentlin/laravel-adminer": "^5.3",
-        "spatie/data-transfer-object": "^2.8"
+        "simplesoftwareio/simple-qrcode": "~4",
+        "spatie/data-transfer-object": "^2.8",
+        "twilio/sdk": "^6.31"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.10",
