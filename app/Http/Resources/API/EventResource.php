@@ -14,7 +14,7 @@ class EventResource extends JsonResource
     {
         return [
             'id'            => $this->public_id,
-            'address'       => $this->adrress,
+            'address'       => $this->address,
             'date_event'    => Carbon::parse($this->date_event)->format('Y-m-d') ?? null,
             'time_event'    => Carbon::parse($this->date_event)->format('H:i') ?? null,
             'title'         => $this->title,

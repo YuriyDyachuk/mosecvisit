@@ -128,12 +128,12 @@ paths:
           application/json:
             schema:
               properties:
-                login:
-                  type: string
-                  default: strrandom15
+                code:
+                  type: number
+                  default: 111111
                   required: true
               required:
-                - secret_qr_code
+                - code
       responses:
         200:
           description: ''
