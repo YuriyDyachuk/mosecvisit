@@ -16,7 +16,7 @@ class UserResource extends JsonResource
             'company_name' => $this->company_name,
             'login_methods' => [
                 'login' => $this->login,
-                'qr'    => 'link to qr code'
+                'qr'    => $this->link_qrcode
             ]
         ];
     }
