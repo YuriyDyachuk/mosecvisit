@@ -52,7 +52,7 @@ class AuthController extends Controller
             return $this->response(TokenResource::make($registerUser));
         }catch (\Throwable $exception){
             DB::rollBack();
-            return $this->response(['message' => $exception->getMessage()]);
+            return $this->response(['message' => "Something went wrong"]);
         }
     }
 

@@ -18,7 +18,7 @@ class CreateEventsTable extends Migration
             $table->id();
             $table->uuid('public_id')->default(DB::raw('(UUID())'))->index();
             $table->string('address')->nullable();
-            $table->timestamp('start_event_date')->nullable();
+            $table->timestamp('date_event')->nullable();
             $table->string('title')->nullable();
             $table->longText('description')->nullable();
             $table->string('lat')->nullable();
