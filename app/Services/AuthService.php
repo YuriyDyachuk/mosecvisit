@@ -92,9 +92,4 @@ class AuthService
     {
         $this->userRepository->resetVerify($userId);
     }
-
-    public function saveLinkQrCode(int $userId, string $link)
-    {
-        $this->userRepository->saveQrCode($userId, $link);
-    }
 }

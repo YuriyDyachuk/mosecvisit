@@ -77,14 +77,15 @@ class AuthController extends Controller
 
     public function registerVerify(VerifyRequest $verifyRequest): JsonResponse
     {
+        $userVerifyFactory = $this->userVerifyFactory->create($verifyRequest);
+
         if (!$this->verifyService->existByCodeAndUserId(
-            (int) $verifyRequest->input('code'),
-            $verifyRequest->user()->id
+            $userVerifyFactory->code,
+            $userVerifyFactory->userId
         )){
             throw new NotFoundHttpException();
         }
 
-        $userVerifyFactory = $this->userVerifyFactory->create($verifyRequest);
         $user = $this->authService->registerVerify($userVerifyFactory);
 
         return $this->response(UserResource::make($user));
@@ -92,14 +93,15 @@ class AuthController extends Controller
 
     public function loginVerify(VerifyRequest $verifyRequest): JsonResponse
     {
+        $userVerifyFactory = $this->userVerifyFactory->create($verifyRequest);
+
         if (!$this->verifyService->existByCodeAndUserId(
-            (int) $verifyRequest->input('code'),
-            $verifyRequest->user()->id
+            $userVerifyFactory->code,
+            $userVerifyFactory->userId
         )){
             throw new NotFoundHttpException();
         }
 
-        $userVerifyFactory = $this->userVerifyFactory->create($verifyRequest);
         $user =  $this->authService->loginVerify($userVerifyFactory);
 
         return $this->response(UserResource::make($user));
