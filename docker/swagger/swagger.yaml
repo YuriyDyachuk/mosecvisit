@@ -11,6 +11,8 @@ externalDocs:
 servers:
   - url: 'http://localhost:3001/api/'
     description: Local server
+  - url: 'https://secureguest.io/api/'
+    description: Prod server
 
 paths:
   /auth/register:
